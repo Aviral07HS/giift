@@ -1,6 +1,564 @@
-<DOCTYPE html>
-  <html>
-    <head>
-      <title>a</title>
-    </head>
-  </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Digital Space</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #080b1a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Background blobs */
+        .blob {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.45;
+            z-index: -1;
+        }
+
+        .blob.one {
+            background: #7c3aed;
+            top: -100px;
+            left: -100px;
+        }
+
+        .blob.two {
+            background: #06b6d4;
+            right: -100px;
+            top: 30%;
+        }
+
+        .blob.three {
+            background: #ec4899;
+            bottom: -150px;
+            left: 30%;
+        }
+
+        /* Navbar */
+        nav {
+            width: 100%;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 11, 26, 0.65);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #a855f7, #06b6d4, #ec4899);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        nav a {
+            color: #ddd;
+            text-decoration: none;
+            margin-left: 30px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #a855f7;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 18px;
+            border-radius: 30px;
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #d8b4fe;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: clamp(50px, 8vw, 95px);
+            line-height: 1;
+            margin-bottom: 25px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(
+                90deg,
+                #a855f7,
+                #06b6d4,
+                #22c55e,
+                #f59e0b,
+                #ec4899
+            );
+            background-size: 300%;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient 6s infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0%; }
+            50% { background-position: 100%; }
+            100% { background-position: 0%; }
+        }
+
+        .hero p {
+            color: #b7bdd1;
+            font-size: 20px;
+            line-height: 1.7;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .buttons {
+            margin-top: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary {
+            color: white;
+            background: linear-gradient(135deg, #7c3aed, #ec4899);
+            box-shadow: 0 10px 30px rgba(168,85,247,0.3);
+        }
+
+        .secondary {
+            color: white;
+            border: 1px solid #444a63;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 50px;
+        }
+
+        /* Cards */
+        .cards {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            transition: 0.35s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #a855f7;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .icon {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #aeb5ca;
+            line-height: 1.6;
+        }
+
+        /* Tech section */
+        .tech {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .tech span {
+            padding: 12px 20px;
+            border-radius: 30px;
+            background: linear-gradient(
+                135deg,
+                rgba(168,85,247,0.2),
+                rgba(6,182,212,0.15)
+            );
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #ddd;
+            transition: 0.3s;
+        }
+
+        .tech span:hover {
+            transform: scale(1.08);
+            background: rgba(168,85,247,0.3);
+        }
+
+        /* CTA */
+        .cta {
+            max-width: 900px;
+            margin: auto;
+            padding: 70px 30px;
+            text-align: center;
+            border-radius: 30px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(124,58,237,0.3),
+                    rgba(236,72,153,0.2),
+                    rgba(6,182,212,0.2)
+                );
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .cta h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            color: #c1c6d8;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 35px;
+            text-align: center;
+            color: #777e98;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+
+            nav {
+                padding: 18px 5%;
+            }
+
+            nav .links {
+                display: none;
+            }
+
+            section {
+                padding: 80px 5%;
+            }
+
+            .section-title {
+                font-size: 34px;
+            }
+
+            .cta h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="blob one"></div>
+    <div class="blob two"></div>
+    <div class="blob three"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">MY.DEV ✦</div>
+
+        <div class="links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#tech">Tech</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                🚀 Welcome to my digital space
+            </div>
+
+            <h1>
+                Build.
+                <span class="gradient-text">Create.</span>
+                <br>
+                Explore.
+            </h1>
+
+            <p>
+                A colorful little corner of the internet where
+                ideas turn into projects, experiments become products,
+                and code comes to life.
+            </p>
+
+            <div class="buttons">
+                <a href="#projects" class="btn primary">
+                    Explore Projects →
+                </a>
+
+                <a href="#about" class="btn secondary">
+                    Discover More
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- About -->
+    <section id="about">
+
+        <h2 class="section-title">
+            What You'll Find Here ✨
+        </h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <div class="icon">💡</div>
+
+                <h3>Ideas</h3>
+
+                <p>
+                    Experiments, concepts and interesting ideas
+                    that are worth exploring.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="icon">⚡</div>
+
+                <h3>Projects</h3>
+
+                <p>
+                    Real projects, prototypes and applications
+                    built with modern technologies.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <div class="icon">🧠</div>
+
+                <h3>Learning</h3>
+
+                <p>
+                    Notes, experiments and things I'm learning
+                    along the way.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Projects -->
+    <section id="projects">
+
+        <h2 class="section-title">
+            Featured Projects 🚀
+        </h2>
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="icon">🌈</div>
+
+                <h3>Project One</h3>
+
+                <p>
+                    A creative project built to experiment
+                    with new ideas and technologies.
+                </p>
+
+                <br>
+
+                <a href="#" class="btn primary">
+                    View Project →
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🤖</div>
+
+                <h3>Project Two</h3>
+
+                <p>
+                    An intelligent application exploring
+                    automation and modern technology.
+                </p>
+
+                <br>
+
+                <a href="#" class="btn primary">
+                    View Project →
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🚀</div>
+
+                <h3>Project Three</h3>
+
+                <p>
+                    Something experimental, exciting and
+                    completely different.
+                </p>
+
+                <br>
+
+                <a href="#" class="btn primary">
+                    View Project →
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Technology -->
+    <section id="tech">
+
+        <h2 class="section-title">
+            Technologies I Love 💻
+        </h2>
+
+        <div class="tech">
+
+            <span>Java</span>
+            <span>Spring Boot</span>
+            <span>JavaScript</span>
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>React</span>
+            <span>Node.js</span>
+            <span>Python</span>
+            <span>Docker</span>
+            <span>Kubernetes</span>
+            <span>Git</span>
+            <span>GitHub</span>
+            <span>AI 🤖</span>
+
+        </div>
+
+    </section>
+
+
+    <!-- Contact -->
+    <section id="contact">
+
+        <div class="cta">
+
+            <h2>
+                Let's Build Something Amazing 🚀
+            </h2>
+
+            <p>
+                Have an idea, project or simply want to say hello?
+                Let's connect.
+            </p>
+
+            <a
+                href="mailto:hello@example.com"
+                class="btn primary"
+            >
+                Say Hello ✉️
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            © 2026 My Digital Space · Made with ❤️ & code
+        </p>
+
+    </footer>
+
+</body>
+</html>
